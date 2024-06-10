@@ -1,4 +1,16 @@
 import React, { useState } from 'react';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
+import 'dayjs/locale/es';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import AddIcon from '@mui/icons-material/Add';
+
+import RefrigerantePart from './RefrigerantePart'
+import EnergíaPart from './EnergiaPart';
+import CombustiblePart from './CombustiblePart';
+import AguaPart from './AguaPart';
+import PapelPart from './PapelPart';
 
 const Formulario = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +33,12 @@ const Formulario = () => {
       suministro: '',
     },
   });
+  const [refrigerantes, setRefrigerantes] = useState([1]);
+  const [combustibles, setCombustibles] = useState([1]);
+  const [energias, setEnergias] = useState([1]);
+  const [aguas, setAguas] = useState([1]);
+  const [papeles, setPapeles] = useState([1]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +57,11 @@ const Formulario = () => {
         [name]: value,
       });
     }
+  };
+
+  const handleAdd = (list, setList) => {
+    const newNumber = Math.max(...list) + 1;
+    setList([...list, list.length!==0?newNumber:1]);
   };
 
   const handleSubmit = (e) => {
@@ -76,132 +99,118 @@ const Formulario = () => {
         </div>
         <div className="flex space-x-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Mes</label>
-            <input
-              type="month"
-              name="mes"
-              value={formData.mes}
-              onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+              <DemoItem label="Mes">
+                <DatePicker views={['year', 'month']} format='MMMM YYYY'/>
+              </DemoItem>
+            </LocalizationProvider>
           </div>
         </div>
-
-        <div className="border-t pt-4">
-          <h2 className="text-xl font-semibold mb-2">Energía</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">kW/W</label>
-              <input
-                type="number"
-                step="0.01"
-                name="energia.kw"
-                value={formData.energia.kw}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Monto en S/</label>
-              <input
-                type="number"
-                step="0.01"
-                name="energia.montoEnergia"
-                value={formData.energia.montoEnergia}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Área Beneficiaria</label>
-              <select
-                name="energia.areaBeneficiaria"
-                value={formData.energia.areaBeneficiaria}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              >
-                <option value="">Seleccione un área</option>
-                <option value="ÁREAS COMUNES">ÁREAS COMUNES</option>
-                <option value="ÁREAS PRIVADAS">ÁREAS PRIVADAS</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t pt-4">
-          <h2 className="text-xl font-semibold mb-2">Agua</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Metros cúbicos</label>
-              <input
-                type="number"
-                step="0.01"
-                name="agua.metrosCubicos"
-                value={formData.agua.metrosCubicos}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Monto en S/</label>
-              <input
-                type="number"
-                step="0.01"
-                name="agua.montoAgua"
-                value={formData.agua.montoAgua}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t pt-4">
+        <h2 className="text-xl font-bold mb-4">Alcance 1: Emisiones fugitivas y combustibles</h2>
+        <div className="flex place-content-between">
           <h2 className="text-xl font-semibold mb-2">Refrigerante</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Recarga de refrigerante (Kg)</label>
-              <input
-                type="number"
-                step="0.01"
-                name="refrigerante.recarga"
-                value={formData.refrigerante.recarga}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Tipo de refrigerante</label>
-              <select
-                name="refrigerante.tipo"
-                value={formData.refrigerante.tipo}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              >
-                <option value="">Seleccione un tipo</option>
-                <option value="Tipo 1">Tipo 1</option>
-                <option value="Tipo 2">Tipo 2</option>
-              </select>
-            </div>
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => handleAdd(refrigerantes,setRefrigerantes)}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              <AddIcon fontSize='small'/>
+            </button>
           </div>
         </div>
-
-        <div className="border-t pt-4">
+        {refrigerantes.map((num, index) => (
+          <RefrigerantePart 
+            list = {refrigerantes}
+            setList = {setRefrigerantes}
+            key={index}
+            id = {num}/>
+        ))}
+        
+        <div className="flex place-content-between">
           <h2 className="text-xl font-semibold mb-2">Combustible</h2>
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Suministro de petróleo (Galones)</label>
-              <input
-                type="number"
-                step="0.01"
-                name="combustible.suministro"
-                value={formData.combustible.suministro}
-                onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            </div>
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => handleAdd(combustibles,setCombustibles)}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              <AddIcon fontSize='small'/>
+            </button>
           </div>
         </div>
+        {combustibles.map((num, index) => (
+          <CombustiblePart 
+            list = {combustibles}
+            setList = {setCombustibles}
+            key={index}
+            id = {num}/>
+        ))}
+
+        <h2 className="text-xl font-bold mb-4">Alcance 2: Consumo de electricidad</h2>
+
+        <div className="flex place-content-between">
+          <h2 className="text-xl font-semibold mb-2">Energía</h2>
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => handleAdd(energias,setEnergias)}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              <AddIcon fontSize='small'/>
+            </button>
+          </div>
+        </div>
+        {energias.map((num, index) => (
+          <EnergíaPart
+            list = {energias}
+            setList = {setEnergias}
+            key={index}
+            id = {num}/>
+        ))}
+        
+        
+        <h2 className="text-xl font-bold mb-4">Alcance 3: Consumo de agua y otras emisiones</h2>
+        <div className="flex place-content-between">
+          <h2 className="text-xl font-semibold mb-2">Agua</h2>
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => handleAdd(aguas,setAguas)}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              <AddIcon fontSize='small'/>
+            </button>
+          </div>
+        </div>
+        {aguas.map((num, index) => (
+          <AguaPart
+            list = {aguas}
+            setList = {setAguas}
+            key={index}
+            id = {num}/>
+        ))}
+
+        <div className="flex place-content-between">
+          <h2 className="text-xl font-semibold mb-2">Papel</h2>
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => handleAdd(papeles,setPapeles)}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              <AddIcon fontSize='small'/>
+            </button>
+          </div>
+        </div>
+        {papeles.map((num, index) => (
+          <PapelPart
+            list = {papeles}
+            setList = {setPapeles}
+            key={index}
+            id = {num}/>
+        ))}
+        
 
         <div className="pt-4">
           <button

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import 'dayjs/locale/es';
+import dayjs from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -13,62 +14,275 @@ import AguaPart from './AguaPart';
 import PapelPart from './PapelPart';
 
 const Formulario = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [dayJSItem, setDayJSItem] = useState(dayjs(''));
   const [formData, setFormData] = useState({
-    edificio: '',
-    mes: '',
-    energia: {
-      kw: '',
-      montoEnergia: '',
-      areaBeneficiaria: '',
-    },
-    agua: {
-      metrosCubicos: '',
-      montoAgua: '',
-    },
-    refrigerante: {
-      recarga: '',
-      tipo: '',
-    },
-    combustible: {
-      suministro: '',
-    },
-  });
-  const [refrigerantes, setRefrigerantes] = useState([1]);
-  const [combustibles, setCombustibles] = useState([1]);
-  const [energias, setEnergias] = useState([1]);
-  const [aguas, setAguas] = useState([1]);
-  const [papeles, setPapeles] = useState([1]);
+    edificio:'',
+    mes:dayjs(''),
+    refrigerante:[
+      {
+        id:1,
+        data:{
+          emision_fugitiva:'Refrigerantes',
+          recarga:'',
+          tipo:'',
+          area_beneficiaria:''
+        }
+      }
+    ],combustible:[
+      {
+        id:1,
+        data:{
+          fuente:'Diesel',
+          suministro_petroleo:'',
+          equipo_beneficiario:''
+        }
+      }
+    ], energia:[
+      {
+        id:1,
+        data:{
+          kw_h:'',
+          monto:'',
+          area_beneficiaria:'',
+          suministro:''
+        }
+      }
+    ], agua:[
+      {
+        id:1,
+        data:{
+          m3:'',
+          monto:'',
+          area_beneficiaria:'',
+          suministro:''
+        }
+      }
+    ],papel:[
+      {
+        id:1,
+        data:{
+          cantidad:'',
+          densidad:'',
+          area:''
+        }
+      }
+    ]});
 
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const [section, key] = name.split('.');
-    if (key) {
-      setFormData({
-        ...formData,
-        [section]: {
-          ...formData[section],
-          [key]: value,
-        },
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+  const handleAdd = (tipo) => {
+    const newID = getMaxValue(formData[tipo],'id')+1;
+    console.log(newID)
+    if (tipo === "refrigerante"){
+      setFormData(
+        {
+          ...formData,
+          [tipo]:[
+            ...formData[tipo],
+            {
+              id:newID,
+              data:{
+                emision_fugitiva:'Refrigerantes',
+                recarga:'',
+                tipo:'',
+                area_beneficiaria:''
+              }
+            }
+          ]
+        });
+    }
+    else if (tipo === "combustible"){
+      setFormData(
+        {
+          ...formData,
+          [tipo]:[
+            ...formData[tipo],
+            {
+              id:newID,
+              data:{
+                fuente:'Diesel',
+                suministro_petroleo:'',
+                equipo_beneficiario:''
+              }
+            }
+          ]
+        });
+    }
+    else if (tipo === "energia"){
+      setFormData(
+        {
+          ...formData,
+          [tipo]:[
+            ...formData[tipo],
+            {
+              id:newID,
+              data:{
+                kw_h:'',
+                monto:'',
+                area_beneficiaria:'',
+                suministro:''
+              }
+            }
+          ]
+        });
+    }
+    else if (tipo === "agua"){
+      setFormData(
+        {
+          ...formData,
+          [tipo]:[
+            ...formData[tipo],
+            {
+              id:newID,
+              data:{
+                m3:'',
+                monto:'',
+                area_beneficiaria:'',
+                suministro:''
+              }
+            }
+          ]
+        });
+    }
+    else if (tipo === "papel"){
+      setFormData(
+        {
+          ...formData,
+          [tipo]:[
+            ...formData[tipo],
+            {
+              id: newID,
+              data:{
+                cantidad:'',
+                densidad:'',
+                area:''
+              }
+            }
+          ]
+        });
     }
   };
 
-  const handleAdd = (list, setList) => {
-    const newNumber = Math.max(...list) + 1;
-    setList([...list, list.length!==0?newNumber:1]);
+  const options = [
+    "ONYX BUSINESS CENTER",
+    "EDIFICIO 991",
+    "EDIFICIO EMPRESARIAL GRAU",
+    "CENTRO EMPRESARIAL QUATTRO",
+    "EDIFICIO BASADRE 233",
+    "EDIFICIO CORPORATIVO AENZA",
+    "EDIFICIO SANTA CRUZ",
+    "CENTRO EMPRESARIAL LEURO",
+    "CENTRO EMPRESARIAL TANGÜIS",
+    "EDIFICIO LIBERTADORES",
+    "CENTRO EMPRESARIAL LA MOLINA",
+    "EDIFICIO VITRA",
+    "EDIFICIO CORPORATIVO ROOSEVELT",
+    "TORRE BARLOVENTO",
+    "EDIFICIO TORRE ORQUIDEAS",
+    "TORRE NAVARRETE",
+    "PANORAMA CENTRO EMPRESARIAL",
+    "EDIFICIO ALBERTO DEL CAMPO 409",
+    "JUNTA DE PROPIETARIOS DE LA TORRE 1",
+    "EDIFICIO PARQUE LAS LOMAS",
+    "PRISMA BUSINESS TOWER",
+    "EDIFICIO BASADRE 607",
+    "CENTRO EMPRESARIAL ABRIL",
+    "PRIME TOWER",
+    "OFIS TOWER",
+    "ICHMA EDIFICIO CORPORATIVO",
+    "EDIFICIO TRILLIUM TOWER",
+    "CENTRO EMPRESARIAL VOLTERRA",
+    "TORRE WIESE",
+    "EDIFICIO ALIAGA 360",
+    "EDIFICIO T-TOWER",
+    "TORRE TEKTON",
+    "TORRE FORUM",
+    "PATIO ABTAO",
+    "PATIO CENTRIC",
+    "LIT ONE",
+    "FIBRA PASEO DEL BOSQUE",
+    "CENTRO EMPRESARIAL BASADRE (ESTAC.)",
+    "TORRE PANAMÁ",
+    "PATIO CAMELIAS",
+    "EDIFICIO CREDISCOTIA",
+    "TORRE SANTA LUISA",
+    "EDIFICIO PERSHING TOWER",
+    "EDIFICIO EMPRESARIAL ESQUILACHE",
+    "CENTRO DE CONVENCIONES Y OFICINAS CAMINO REAL",
+    "EDIFICIO TORRE 28",
+    "FIBRA - CAMINO REAL"
+  ];
+
+  const filteredOptions = options.filter((option) =>
+    option.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleOptionClick = (value) => {
+    setSearchTerm(value);
+    setIsOpen(false);
+    setFormData({
+      ...formData,
+      edificio: value,
+    });
   };
+
+  const getMaxValue = (arr, field) => {
+    return Math.max(...arr.map(o => o[field]), 0);
+  };
+
+  const handleChangeMes = (value) => {
+    setDayJSItem(value);
+    setFormData({
+      ...formData,
+      mes: value.format("YYYYMM"),
+    });
+  };
+
+  const handleChangeData = (e, id) => {
+    const { name, value } = e.target;
+    const [section, key] = name.split('.');
+    const index = formData[section].findIndex(item => item.id === id);
+
+    const updated = {
+      ...formData[section][index],
+      data: {
+        ...formData[section][index].data,
+        [key]: value
+      }
+    };
+
+    const updatedArray = [
+      ...formData[section].slice(0, index),
+      updated,
+      ...formData[section].slice(index + 1)
+    ];
+
+    setFormData({
+      ...formData,
+      [section]: updatedArray
+    });
+  };
+
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleRemove = (section, id) => {
+    const updatedArray = formData[section].filter(item => item.id !== id);
+  
+    setFormData({
+      ...formData,
+      [section]: updatedArray
+    });
+  };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes hacer la llamada a la API con formData
     console.log('Datos del formulario:', formData);
-    fetch('https://api.tuservidor.com/endpoint', {
+    fetch('http://127.0.0.1:5000/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +290,7 @@ const Formulario = () => {
       body: JSON.stringify(formData),
     })
       .then((response) => response.json())
-      .then((data) => console.log('Respuesta del servidor:', data))
+      .then((data) => alert("Registro insertado correctamente."))
       .catch((error) => console.error('Error:', error));
   };
 
@@ -84,24 +298,41 @@ const Formulario = () => {
     <div className="max-w-4xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Formulario de Ingreso de Información</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Edificio</label>
-          <select
-            name="edificio"
-            value={formData.edificio}
-            onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          >
-            <option value="">Seleccione un edificio</option>
-            <option value="Edificio 1">Edificio 1</option>
-            <option value="Edificio 2">Edificio 2</option>
-          </select>
+      <div className="mb-6">
+          <label htmlFor="select" className="block text-gray-700 font-bold mb-2">
+            Edificio:
+          </label>
+          <input
+            type="text"
+            placeholder="Buscar o seleccionar..."
+            value={searchTerm}
+            onChange={handleInputChange}
+            onFocus={() => setIsOpen(true)}
+            onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          {isOpen && (
+            <div className="absolute z-10 bg-white border rounded w-full mt-1 overflow-y-auto max-h-80 max-w-sm">
+              {filteredOptions.map((option, index) => (
+                <div
+                  key={index}
+                  onClick={() => handleOptionClick(option)}
+                  className="cursor-pointer hover:bg-gray-100 py-1 px-3"
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex space-x-4">
           <div>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
               <DemoItem label="Mes">
-                <DatePicker views={['year', 'month']} format='MMMM YYYY'/>
+                <DatePicker views={['year', 'month']} format='MMMM YYYY'
+                name='mes'
+                value={dayJSItem}
+                onChange={(newValue) => handleChangeMes(newValue)}/>
               </DemoItem>
             </LocalizationProvider>
           </div>
@@ -112,19 +343,20 @@ const Formulario = () => {
           <div className="flex gap-4">
             <button
               type="button"
-              onClick={() => handleAdd(refrigerantes,setRefrigerantes)}
+              onClick={() => handleAdd('refrigerante')}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <AddIcon fontSize='small'/>
             </button>
           </div>
         </div>
-        {refrigerantes.map((num, index) => (
+        {formData.refrigerante.map((elemento, index) => (
           <RefrigerantePart 
-            list = {refrigerantes}
-            setList = {setRefrigerantes}
+            data = {elemento.data}
+            handleChangeData = {handleChangeData}
+            handleRemove = {handleRemove}
             key={index}
-            id = {num}/>
+            id = {elemento.id}/>
         ))}
         
         <div className="flex place-content-between">
@@ -132,19 +364,20 @@ const Formulario = () => {
           <div className="flex gap-4">
             <button
               type="button"
-              onClick={() => handleAdd(combustibles,setCombustibles)}
+              onClick={() => handleAdd('combustible')}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <AddIcon fontSize='small'/>
             </button>
           </div>
         </div>
-        {combustibles.map((num, index) => (
+        {formData.combustible.map((elemento, index) => (
           <CombustiblePart 
-            list = {combustibles}
-            setList = {setCombustibles}
+            data = {elemento.data}
+            handleChangeData = {handleChangeData}
+            handleRemove = {handleRemove}
             key={index}
-            id = {num}/>
+            id = {elemento.id}/>
         ))}
 
         <h2 className="text-xl font-bold mb-4">Alcance 2: Consumo de electricidad</h2>
@@ -154,19 +387,20 @@ const Formulario = () => {
           <div className="flex gap-4">
             <button
               type="button"
-              onClick={() => handleAdd(energias,setEnergias)}
+              onClick={() => handleAdd('energia')}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <AddIcon fontSize='small'/>
             </button>
           </div>
         </div>
-        {energias.map((num, index) => (
+        {formData.energia.map((elemento, index) => (
           <EnergíaPart
-            list = {energias}
-            setList = {setEnergias}
+            data = {elemento.data}
+            handleChangeData = {handleChangeData}
+            handleRemove = {handleRemove}
             key={index}
-            id = {num}/>
+            id = {elemento.id}/>
         ))}
         
         
@@ -176,19 +410,20 @@ const Formulario = () => {
           <div className="flex gap-4">
             <button
               type="button"
-              onClick={() => handleAdd(aguas,setAguas)}
+              onClick={() => handleAdd('agua')}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <AddIcon fontSize='small'/>
             </button>
           </div>
         </div>
-        {aguas.map((num, index) => (
+        {formData.agua.map((elemento, index) => (
           <AguaPart
-            list = {aguas}
-            setList = {setAguas}
+            data = {elemento.data}
+            handleChangeData = {handleChangeData}
+            handleRemove = {handleRemove}
             key={index}
-            id = {num}/>
+            id = {elemento.id}/>
         ))}
 
         <div className="flex place-content-between">
@@ -196,19 +431,20 @@ const Formulario = () => {
           <div className="flex gap-4">
             <button
               type="button"
-              onClick={() => handleAdd(papeles,setPapeles)}
+              onClick={() => handleAdd('papel')}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             >
               <AddIcon fontSize='small'/>
             </button>
           </div>
         </div>
-        {papeles.map((num, index) => (
+        {formData.papel.map((elemento, index) => (
           <PapelPart
-            list = {papeles}
-            setList = {setPapeles}
+            data = {elemento.data}
+            handleChangeData = {handleChangeData}
+            handleRemove = {handleRemove}
             key={index}
-            id = {num}/>
+            id = {elemento.id}/>
         ))}
         
 

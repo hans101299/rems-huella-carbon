@@ -1,13 +1,8 @@
 import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const PapelPart = ({list, setList, id}) => {
+const PapelPart = ({data, handleChangeData, handleRemove, id}) => {
 
-    const handleRemove = (numberToRemove) => {
-        console.log(list);
-        console.log(numberToRemove);
-        setList(list.filter(num => num !== numberToRemove));
-    };
 
     return (
         <div className="border-t pt-4">
@@ -18,7 +13,9 @@ const PapelPart = ({list, setList, id}) => {
               <input
                 type="number"
                 step="0.01"
-                name="agua.montoAgua"
+                name="papel.cantidad"
+                value={data.cantidad}
+                onChange={(e)=>handleChangeData(e,id)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
@@ -27,7 +24,9 @@ const PapelPart = ({list, setList, id}) => {
               <input
                 type="number"
                 step="0.01"
-                name="agua.montoAgua"
+                name="papel.densidad"
+                value={data.densidad}
+                onChange={(e)=>handleChangeData(e,id)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
@@ -36,14 +35,16 @@ const PapelPart = ({list, setList, id}) => {
               <input
                 type="number"
                 step="0.01"
-                name="agua.montoAgua"
+                name="papel.area"
+                value={data.area}
+                onChange={(e)=>handleChangeData(e,id)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
           </div>
           <button
             type="button"
-            onClick={() => handleRemove(id)}
+            onClick={() => handleRemove('papel',id)}
             className="px-4 max-h-12 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
                 <DeleteIcon fontSize='small'/>

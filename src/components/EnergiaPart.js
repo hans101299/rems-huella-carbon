@@ -1,13 +1,7 @@
 import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const EnergíaPart = ({list, setList, id}) => {
-
-    const handleRemove = (numberToRemove) => {
-        console.log(list);
-        console.log(numberToRemove);
-        setList(list.filter(num => num !== numberToRemove));
-    };
+const EnergíaPart = ({data, handleChangeData, handleRemove, id}) => {
 
     return (
         <div className="border-t pt-4">
@@ -18,9 +12,9 @@ const EnergíaPart = ({list, setList, id}) => {
               <input
                 type="number"
                 step="0.01"
-                name="energia.kw"
-                // value={formData.energia.kw}
-                // onChange={handleChange}
+                name="energia.kw_h"
+                value={data.kw_h}
+                onChange={(e)=>handleChangeData(e,id)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
@@ -29,18 +23,18 @@ const EnergíaPart = ({list, setList, id}) => {
               <input
                 type="number"
                 step="0.01"
-                name="energia.montoEnergia"
-                // value={formData.energia.montoEnergia}
-                // onChange={handleChange}
+                name="energia.monto"
+                value={data.monto}
+                onChange={(e)=>handleChangeData(e,id)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Área Beneficiaria</label>
               <select
-                name="energia.areaBeneficiaria"
-                // value={formData.energia.areaBeneficiaria}
-                // onChange={handleChange}
+                name="energia.area_beneficiaria"
+                value={data.area_beneficiaria}
+                onChange={(e)=>handleChangeData(e,id)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               >
                 <option value="">Seleccione un área</option>
@@ -59,14 +53,16 @@ const EnergíaPart = ({list, setList, id}) => {
               <label className="block text-sm font-medium text-gray-700">N° Suministro</label>
               <input
                 type="text"
-                name="energia.kw"
+                name="energia.suministro"
+                value={data.suministro}
+                onChange={(e)=>handleChangeData(e,id)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               />
             </div>
           </div>
           <button
             type="button"
-            onClick={() => handleRemove(id)}
+            onClick={() => handleRemove('energia',id)}
             className="px-4 max-h-12 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
             >
                 <DeleteIcon fontSize='small'/>

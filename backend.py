@@ -135,4 +135,4 @@ def submit_data():
     return jsonify({'message': 'Data inserted successfully'}), 201
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=5003)

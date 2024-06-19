@@ -282,7 +282,7 @@ const Formulario = () => {
     e.preventDefault();
     // Aquí puedes hacer la llamada a la API con formData
     console.log('Datos del formulario:', formData);
-    fetch('http://127.0.0.1:5000/submit', {
+    fetch('http://164.68.101.193:5003/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

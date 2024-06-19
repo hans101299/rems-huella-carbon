@@ -3,6 +3,33 @@ import classNames from 'classnames';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const RefrigerantePart = ({data, handleChangeData, handleRemove, id}) => {
+
+  const tipos_de_refrigerante = [
+    "R-134A",
+    "R-404A",
+    "R-407A",
+    "R-407C",
+    "R-407F",
+    "R-407H",
+    "R-410A",
+    "R-417A",
+    "R-422D",
+    "R-424A (RS-44)",
+    "R-426A (RS-24)",
+    "R-428A (RS-52)",
+    "R-434A (RS-45)",
+    "R-442A (RS-50)",
+    "R-448A",
+    "R-449A",
+    "R-450",
+    "R-452",
+    "R-453A (RS-70)",
+    "R-470A (RS-53)",
+    "R-470B (RS-51)",
+    "R-507A",
+    "R-513A",
+    "RS-90"
+  ]
     
     return (
         <div className="border-t pt-4">
@@ -52,8 +79,9 @@ const RefrigerantePart = ({data, handleChangeData, handleRemove, id}) => {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
               <option value="">Seleccione un tipo</option>
-              <option value="Tipo 1">Tipo 1</option>
-              <option value="Tipo 2">Tipo 2</option>
+              {tipos_de_refrigerante.map((elemento, index) => (
+                <option value={elemento}>{elemento}</option>
+              ))}
             </select>
           </div>
           {data.emision_fugitiva==='Refrigerantes' && 

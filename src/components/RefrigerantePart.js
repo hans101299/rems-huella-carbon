@@ -65,8 +65,8 @@ const RefrigerantePart = ({data, handleChangeData, handleRemove, id}) => {
               type="number"
               step="0.01"
               name="refrigerante.recarga"
-               value={data.recarga}
-               onChange={(e)=>handleChangeData(e,id)}
+              value={data.recarga}
+              onChange={(e)=>handleChangeData(e,id)}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             />
           </div>
@@ -79,9 +79,10 @@ const RefrigerantePart = ({data, handleChangeData, handleRemove, id}) => {
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
               <option value="">Seleccione un tipo</option>
-              {tipos_de_refrigerante.map((elemento, index) => (
+              {data.emision_fugitiva==='Refrigerantes' ? (tipos_de_refrigerante.map((elemento, index) => (
                 <option value={elemento}>{elemento}</option>
-              ))}
+              ))):
+              (<option value="CO2">CO2</option>)}
             </select>
           </div>
           {data.emision_fugitiva==='Refrigerantes' && 

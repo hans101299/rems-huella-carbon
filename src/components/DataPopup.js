@@ -1,13 +1,13 @@
 import React from 'react';
 
-const DataPopup = ({ data, onClose, handleSendData }) => {
+const DataPopup = ({ data,edificio, onClose, handleSendData }) => {
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
       <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[95dvh] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">Datos de Validación</h2>
         <div>
           <h3 className="text-xl font-semibold">Edificio</h3>
-          <p>{data.edificio}</p>
+          <p>{edificio}</p>
         </div>
         <div>
           <h3 className="text-xl font-semibold">Mes</h3>

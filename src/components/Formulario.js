@@ -20,6 +20,7 @@ const Formulario = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dayJSItem, setDayJSItem] = useState(dayjs(''));
   const [edificios, setEdificios] = useState([]);
+  const [edificio, setEdificio] = useState("");
   const [formData, setFormData] = useState({
     edificio:'',
     mes:dayjs(''),
@@ -201,6 +202,7 @@ const Formulario = () => {
       ...formData,
       edificio: value.id,
     });
+    setEdificio(value.inmueble);
   };
 
   const getMaxValue = (arr, field) => {
@@ -437,7 +439,7 @@ const Formulario = () => {
           </button>
         </div>
       </form>
-      {isPopupOpen && <DataPopup data={formData} onClose={handleClosePopup} handleSendData={handleSendData}/>}
+      {isPopupOpen && <DataPopup data={formData} edificio={edificio} onClose={handleClosePopup} handleSendData={handleSendData}/>}
     </div>
   );
 };

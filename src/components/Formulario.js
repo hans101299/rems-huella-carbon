@@ -13,6 +13,8 @@ import CombustiblePart from './CombustiblePart';
 import AguaPart from './AguaPart';
 import PapelPart from './PapelPart';
 
+import DataPopup from './DataPopup';
+
 const Formulario = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -70,6 +72,16 @@ const Formulario = () => {
         }
       }
     ]});
+  
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const handleOpenPopup = () => {
+      setIsPopupOpen(true);
+    };
+  
+    const handleClosePopup = () => {
+      setIsPopupOpen(false);
+    };
 
     useEffect(() => {
       const fetchEdificios = async () => {
@@ -178,7 +190,6 @@ const Formulario = () => {
     }
   };
 
-
   const filteredOptions = edificios.filter((option) =>
     option.inmueble.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -245,6 +256,10 @@ const Formulario = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    handleOpenPopup();
+  };
+
+  const handleSendData = () => {
     // Aquí puedes hacer la llamada a la API con formData
     console.log('Datos del formulario:', formData);
     fetch('http://164.68.101.193:5003/submit', {
@@ -257,7 +272,7 @@ const Formulario = () => {
       .then((response) => response.json())
       .then((data) => alert("Registro insertado correctamente."))
       .catch((error) => console.error('Error:', error));
-  };
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4">
@@ -418,10 +433,11 @@ const Formulario = () => {
             type="submit"
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            Enviar
+            Revisar
           </button>
         </div>
       </form>
+      {isPopupOpen && <DataPopup data={formData} onClose={handleClosePopup} handleSendData={handleSendData}/>}
     </div>
   );
 };

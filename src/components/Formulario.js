@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 import 'dayjs/locale/es';
 import dayjs from 'dayjs';
@@ -17,6 +17,7 @@ const Formulario = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [dayJSItem, setDayJSItem] = useState(dayjs(''));
+  const [edificios, setEdificios] = useState([]);
   const [formData, setFormData] = useState({
     edificio:'',
     mes:dayjs(''),
@@ -70,6 +71,19 @@ const Formulario = () => {
       }
     ]});
 
+    useEffect(() => {
+      const fetchEdificios = async () => {
+      const response = await fetch('http://164.68.101.193:5003/edificios');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setEdificios(data);
+        
+      };
+  
+      fetchEdificios();
+    }, []);
 
   const handleAdd = (tipo) => {
     const newID = getMaxValue(formData[tipo],'id')+1;
@@ -164,66 +178,17 @@ const Formulario = () => {
     }
   };
 
-  const options = [
-    "ONYX BUSINESS CENTER",
-    "EDIFICIO 991",
-    "EDIFICIO EMPRESARIAL GRAU",
-    "CENTRO EMPRESARIAL QUATTRO",
-    "EDIFICIO BASADRE 233",
-    "EDIFICIO CORPORATIVO AENZA",
-    "EDIFICIO SANTA CRUZ",
-    "CENTRO EMPRESARIAL LEURO",
-    "CENTRO EMPRESARIAL TANGÜIS",
-    "EDIFICIO LIBERTADORES",
-    "CENTRO EMPRESARIAL LA MOLINA",
-    "EDIFICIO VITRA",
-    "EDIFICIO CORPORATIVO ROOSEVELT",
-    "TORRE BARLOVENTO",
-    "EDIFICIO TORRE ORQUIDEAS",
-    "TORRE NAVARRETE",
-    "PANORAMA CENTRO EMPRESARIAL",
-    "EDIFICIO ALBERTO DEL CAMPO 409",
-    "JUNTA DE PROPIETARIOS DE LA TORRE 1",
-    "EDIFICIO PARQUE LAS LOMAS",
-    "PRISMA BUSINESS TOWER",
-    "EDIFICIO BASADRE 607",
-    "CENTRO EMPRESARIAL ABRIL",
-    "PRIME TOWER",
-    "OFIS TOWER",
-    "ICHMA EDIFICIO CORPORATIVO",
-    "EDIFICIO TRILLIUM TOWER",
-    "CENTRO EMPRESARIAL VOLTERRA",
-    "TORRE WIESE",
-    "EDIFICIO ALIAGA 360",
-    "EDIFICIO T-TOWER",
-    "TORRE TEKTON",
-    "TORRE FORUM",
-    "PATIO ABTAO",
-    "PATIO CENTRIC",
-    "LIT ONE",
-    "FIBRA PASEO DEL BOSQUE",
-    "CENTRO EMPRESARIAL BASADRE (ESTAC.)",
-    "TORRE PANAMÁ",
-    "PATIO CAMELIAS",
-    "EDIFICIO CREDISCOTIA",
-    "TORRE SANTA LUISA",
-    "EDIFICIO PERSHING TOWER",
-    "EDIFICIO EMPRESARIAL ESQUILACHE",
-    "CENTRO DE CONVENCIONES Y OFICINAS CAMINO REAL",
-    "EDIFICIO TORRE 28",
-    "FIBRA - CAMINO REAL"
-  ];
 
-  const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOptions = edificios.filter((option) =>
+    option.inmueble.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleOptionClick = (value) => {
-    setSearchTerm(value);
+    setSearchTerm(value.inmueble);
     setIsOpen(false);
     setFormData({
       ...formData,
-      edificio: value,
+      edificio: value.id,
     });
   };
 
@@ -319,7 +284,7 @@ const Formulario = () => {
                   onClick={() => handleOptionClick(option)}
                   className="cursor-pointer hover:bg-gray-100 py-1 px-3"
                 >
-                  {option}
+                  {option.inmueble}
                 </div>
               ))}
             </div>

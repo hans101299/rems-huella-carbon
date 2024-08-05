@@ -25,53 +25,53 @@ const Formulario = () => {
     edificio:'',
     mes:dayjs(''),
     refrigerante:[
-      {
-        id:1,
-        data:{
-          emision_fugitiva:'Refrigerantes',
-          recarga:'',
-          tipo:'',
-          area_beneficiaria:''
-        }
-      }
+      // {
+      //   id:1,
+      //   data:{
+      //     emision_fugitiva:'Refrigerantes',
+      //     recarga:'',
+      //     tipo:'',
+      //     area_beneficiaria:''
+      //   }
+      // }
     ],combustible:[
-      {
-        id:1,
-        data:{
-          fuente:'Diesel',
-          suministro_petroleo:'',
-          equipo_beneficiario:''
-        }
-      }
+      // {
+      //   id:1,
+      //   data:{
+      //     fuente:'Diesel',
+      //     suministro_petroleo:'',
+      //     equipo_beneficiario:''
+      //   }
+      // }
     ], energia:[
-      {
-        id:1,
-        data:{
-          kw_h:'',
-          monto:'',
-          area_beneficiaria:'',
-          suministro:''
-        }
-      }
+      // {
+      //   id:1,
+      //   data:{
+      //     kw_h:'',
+      //     monto:'',
+      //     area_beneficiaria:'',
+      //     suministro:''
+      //   }
+      // }
     ], agua:[
-      {
-        id:1,
-        data:{
-          m3:'',
-          monto:'',
-          area_beneficiaria:'',
-          suministro:''
-        }
-      }
+      // {
+      //   id:1,
+      //   data:{
+      //     m3:'',
+      //     monto:'',
+      //     area_beneficiaria:'',
+      //     suministro:''
+      //   }
+      // }
     ],papel:[
-      {
-        id:1,
-        data:{
-          cantidad:'',
-          densidad:'',
-          area:''
-        }
-      }
+      // {
+      //   id:1,
+      //   data:{
+      //     cantidad:'',
+      //     densidad:'',
+      //     area:''
+      //   }
+      // }
     ]});
   
     const [isPopupOpen, setIsPopupOpen] = useState(false);

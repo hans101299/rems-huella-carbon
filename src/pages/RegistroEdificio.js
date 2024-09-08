@@ -27,7 +27,7 @@ const RegistroEdificio = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5003/registro-edificio', {
+      const response = await fetch('http://164.68.101.193:5003/registro-edificio', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

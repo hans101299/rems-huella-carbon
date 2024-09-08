@@ -37,13 +37,13 @@ const DataPopup = ({ data,edificio, onClose, handleSendData }) => {
         <div className='flex justify-between'>
             <button
             onClick={handleSendData}
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+            className="mt-4 bg-black text-white py-2 px-4 rounded hover:bg-black"
             >
             Enviar
             </button>
             <button
             onClick={onClose}
-            className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+            className="mt-4 bg-black text-white py-2 px-4 rounded hover:bg-black"
             >
             Cerrar
             </button>
